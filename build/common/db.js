@@ -12,28 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const cors_1 = __importDefault(require("cors"));
-const db_1 = require("./common/db");
-dotenv_1.default.config();
-const app = (0, express_1.default)();
-const PORT = parseInt(process.env["PORT"], 10);
-if (!process.env["PORT"]) {
-    process.exit();
-}
-app.use(express_1.default.json());
-function main() {
+exports.connectToMongoDB = connectToMongoDB;
+const mongoose_1 = __importDefault(require("mongoose"));
+function connectToMongoDB() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, db_1.connectToMongoDB)();
-        app.use((0, cors_1.default)());
-        app.get("/", (req, res) => {
-            res.send("Express + TypeScript Server");
-        });
-        app.listen(PORT, () => {
-            console.log(`Listening on port ${PORT}`);
-        });
+        const mongoUrl = process.env.MONGO_URL;
+        if (!mongoUrl) {
+            throw new Error("MONGO_URL environment variable is not defined.");
+        }
+        try {
+            yield mongoose_1.default.connect(mongoUrl);
+            console.log("Connected to MongoDB");
+        }
+        catch (error) {
+            console.error("Error connecting to MongoDB:", error);
+        }
     });
 }
-main();
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=db.js.map
