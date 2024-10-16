@@ -1,28 +1,32 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-// import { connectToMongoDB } from "./common/db";
+import swaggerUi from "swagger-ui-express";
+
+import swaggerDocs from './swaggerOptions';
+import exampleRouter from "./routes/example";
 
 dotenv.config();
 
 const app: Express = express();
-const PORT: number = parseInt(process.env["PORT"] as string, 10);
+const PORT: number = parseInt(process.env["PORT"] as string, 10) || 3000; 
 
 app.use(express.json());
+
 
 async function main() {
   // await connectToMongoDB();
 
   app.use(cors());
 
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Express + TypeScript Server");
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-  });
+  app.use('/example', exampleRouter);
 
   app.listen(PORT, () => {
     console.log(`[server]: Server is running at http://localhost:${PORT}`);
   });
+
 }
 
-main();
+export default main()
