@@ -17,6 +17,7 @@ async function main() {
 
   app.get("/", (req: Request, res: Response) => {
     res.send("Express + TypeScript Server");
+
   });
 
   app.listen(PORT, () => {
