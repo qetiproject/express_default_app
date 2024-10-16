@@ -1,4 +1,4 @@
-Default express app with MONGODB configuration, typescript, swagger and docker
+Default express app with MONGODB configuration, typescript, swagger, eslint and docker
 For running app you need
 
 docker compose up --build
